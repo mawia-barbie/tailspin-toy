@@ -1,0 +1,23 @@
+---
+import { getAnimalAvatar } from '../lib/animalAvatars';
+
+interface Props {
+    gameId: number;
+    size?: 'sm' | 'lg';
+}
+
+const { gameId, size = 'sm' } = Astro.props;
+const avatar = getAnimalAvatar(gameId);
+const sizeClass = size === 'lg' ? 'h-20 w-20 text-5xl' : 'h-12 w-12 text-3xl';
+---
+
+<span
+    class:list={[
+        'inline-flex shrink-0 items-center justify-center rounded-full border border-slate-600 bg-slate-700/80 shadow-inner',
+        sizeClass,
+    ]}
+    role="img"
+    aria-label={`${avatar.name} avatar`}
+    data-testid="game-avatar"
+    data-animal={avatar.name.toLowerCase()}
+>{avatar.emoji}</span>

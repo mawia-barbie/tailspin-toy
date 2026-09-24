@@ -24,6 +24,16 @@ test.describe('Game Listing and Navigation', () => {
     });
   });
 
+  test('should display accessible animal avatars for games', async ({ page }) => {
+    await page.goto('/');
+
+    const gameCards = page.getByTestId('game-card');
+    const avatars = page.getByTestId('game-avatar');
+    await expect(gameCards).not.toHaveCount(0);
+    await expect(avatars).toHaveCount(await gameCards.count());
+    await expect(avatars.first()).toHaveAttribute('aria-label', /avatar$/);
+  });
+
   test('should navigate to correct game details page when clicking on a game', async ({ page }) => {
     let gameId: string | null;
     let gameTitle: string | null;
@@ -50,6 +60,7 @@ test.describe('Game Listing and Navigation', () => {
       if (gameTitle) {
         await expect(page.getByTestId('game-details-title')).toHaveText(gameTitle);
       }
+      await expect(page.getByTestId('game-avatar')).toHaveAttribute('aria-label', /avatar$/);
     });
   });
 
